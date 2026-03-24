@@ -1,0 +1,64 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ユーザー（管理者）テーブル
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+// 参加者テーブル
+model Player {
+  id         Int      @id @default(autoincrement())
+  name       String
+  level      Int?
+  is_present Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("players")
+}
+
+// コートテーブル
+model Court {
+  id         Int      @id @default(autoincrement())
+  name       String
+  match_type String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  matches Match[]
+
+  @@map("courts")
+}
+
+// 試合結果テーブル
+model Match {
+  id               Int      @id @default(autoincrement())
+  court_id         Int
+  match_type       String
+  team1_player_ids Json
+  team2_player_ids Json
+  winner_team      Int?
+  score            String?
+  played_at        DateTime @default(now())
+  created_at       DateTime @default(now())
+
+  court Court @relation(fields: [court_id], references: [id])
+
+  @@map("matches")
+}
