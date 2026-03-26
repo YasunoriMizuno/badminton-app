@@ -40,22 +40,29 @@ export async function PATCH(request: Request, { params }: Params) {
 
 // コート削除
 export async function DELETE(_request: Request, { params }: Params) {
-  try {
-    const id = Number(params.id)
-    if (isNaN(id)) {
+    try {
+      const id = Number(params.id)
+      if (isNaN(id)) {
+        return NextResponse.json(
+          { data: null, error: '不正なIDです' },
+          { status: 400 }
+        )
+      }
+  
+      // 紐づいた試合データを先に削除
+      await prisma.match.deleteMany({
+        where: { court_id: id },
+      })
+  
+      // コートを削除
+      await prisma.court.delete({ where: { id } })
+  
+      return NextResponse.json({ data: { id }, error: null })
+    } catch (error) {
+      console.error('[DELETE /api/courts/:id]', error)
       return NextResponse.json(
-        { data: null, error: '不正なIDです' },
-        { status: 400 }
+        { data: null, error: '削除に失敗しました' },
+        { status: 500 }
       )
     }
-
-    await prisma.court.delete({ where: { id } })
-    return NextResponse.json({ data: { id }, error: null })
-  } catch (error) {
-    console.error('[DELETE /api/courts/:id]', error)
-    return NextResponse.json(
-      { data: null, error: '削除に失敗しました' },
-      { status: 500 }
-    )
   }
-}

@@ -1,6 +1,4 @@
 // src/components/result/MatchHistoryList.tsx
-// 試合履歴一覧
-
 'use client'
 
 import { useState } from 'react'
@@ -18,7 +16,6 @@ type Props = {
 export function MatchHistoryList({ matches, players, onDeleted }: Props) {
   const [deletingId, setDeletingId] = useState<number | null>(null)
 
-  // IDから名前を取得
   function getPlayerNames(ids: number[]): string {
     return ids
       .map((id) => players.find((p) => p.id === id)?.name ?? '不明')
@@ -56,25 +53,14 @@ export function MatchHistoryList({ matches, players, onDeleted }: Props) {
           （直近{matches.length}件）
         </span>
       </h2>
-
       <div className="space-y-3">
         {matches.map((match) => (
-          <div
-            key={match.id}
-            className="border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-colors"
-          >
-            {/* ヘッダー */}
+          <div key={match.id} className="border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-colors">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-medium text-sm text-gray-800">
-                  {match.court.name}
-                </span>
-                <span className="badge-gray">
-                  {formatMatchType(match.match_type)}
-                </span>
-                <span className="text-xs text-gray-400">
-                  {formatDate(match.played_at)}
-                </span>
+                <span className="font-medium text-sm text-gray-800">{match.court.name}</span>
+                <span className="badge-gray">{formatMatchType(match.match_type)}</span>
+                <span className="text-xs text-gray-400">{formatDate(match.played_at)}</span>
               </div>
               <button
                 onClick={() => handleDelete(match.id)}
@@ -87,25 +73,23 @@ export function MatchHistoryList({ matches, players, onDeleted }: Props) {
                 }
               </button>
             </div>
-
-            {/* 対戦表示 */}
             <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className={`p-2 rounded-lg text-center
-                ${match.winner_team === 1
-                  ? 'bg-blue-100 ring-2 ring-blue-400'
-                  : 'bg-blue-50'}`}
-              >
-                <p className="text-xs text-blue-500 mb-1">
-                  チーム1 {match.winner_team === 1 && '🏆'}
-                </p>
-                <p className="font-semibold text-blue-800 break-words">
-                  {getPlayerNames(match.team1_player_ids)}
-                </p>
+              <div className={`p-2 rounded-lg text-center ${match.winner_team === 1 ? 'bg-blue-100 ring-2 ring-blue-400' : 'bg-blue-50'}`}>
+                <p className="text-xs text-blue-500 mb-1">チーム1 {match.winner_team === 1 && '🏆'}</p>
+                <p className="font-semibold text-blue-800 break-words">{getPlayerNames(match.team1_player_ids)}</p>
               </div>
-
               <div className="flex items-center justify-center flex-col">
                 <span className="font-black text-gray-300 text-xl">VS</span>
-                {match.score && (
-                  <span className="text-xs font-bold text-gray-500 mt-1">
-                    {match.score}
-                  </span>
+                {match.score && <span className="text-xs font-bold text-gray-500 mt-1">{match.score}</span>}
+              </div>
+              <div className={`p-2 rounded-lg text-center ${match.winner_team === 2 ? 'bg-orange-100 ring-2 ring-orange-400' : 'bg-orange-50'}`}>
+                <p className="text-xs text-orange-500 mb-1">チーム2 {match.winner_team === 2 && '🏆'}</p>
+                <p className="font-semibold text-orange-800 break-words">{getPlayerNames(match.team2_player_ids)}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
