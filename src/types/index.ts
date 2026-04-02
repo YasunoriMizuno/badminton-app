@@ -7,6 +7,7 @@ export type Player = {
   id: number
   name: string
   level: number | null
+  gender: string | null
   is_present: boolean
   created_at: Date
   updated_at: Date
