@@ -1,0 +1,50 @@
+# .github/workflows/ci.yml
+# mainブランチにpush・PRされたら自動でチェックを実行
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    name: Type Check & Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # コードを取得
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      # Node.jsのセットアップ
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # パッケージのインストール
+      - name: パッケージをインストール
+        run: npm ci
+
+      # TypeScriptの型チェック
+      - name: TypeScriptの型チェック
+        run: npx tsc --noEmit
+
+      # ESLintのチェック
+      - name: ESLintのチェック
+        run: npm run lint
+
+      # ビルドチェック
+      - name: ビルドチェック
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
