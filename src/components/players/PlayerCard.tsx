@@ -106,6 +106,17 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
         )}
       </div>
 
+      {/* 性別 */}
+{player.gender && (
+  <span className={`text-xs px-2 py-0.5 rounded-full ${
+    player.gender === 'male'
+      ? 'bg-blue-100 text-blue-600'
+      : 'bg-pink-100 text-pink-600'
+  }`}>
+    {player.gender === 'male' ? '男性' : '女性'}
+  </span>
+)}
+
       {/* 右側：出席バッジ・削除ボタン */}
       <div className="flex items-center gap-2">
         {player.is_present && (
