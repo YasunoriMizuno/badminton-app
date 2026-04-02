@@ -14,6 +14,7 @@ type Props = {
 export function PlayerAddForm({ onPlayerAdded }: Props) {
   const [name, setName] = useState('')
   const [level, setLevel] = useState<string>('')
+  const [gender, setGender] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -31,6 +32,7 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
         body: JSON.stringify({
           name: name.trim(),
           level: level ? Number(level) : null,
+          gender: gender || null, 
         }),
       })
 
@@ -43,6 +45,7 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
       onPlayerAdded(data)
       setName('')
       setLevel('')
+      setGender('') 
     } catch (err) {
       setError(err instanceof Error ? err.message : '追加に失敗しました')
     } finally {
@@ -99,6 +102,22 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
             <option value="5">5（エキスパート）</option>
           </select>
         </div>
+        {/* 性別 */}
+<div className="w-full sm:w-36">
+  <label htmlFor="playerGender" className="label">
+    性別（任意）
+  </label>
+  <select
+    id="playerGender"
+    value={gender}
+    onChange={(e) => setGender(e.target.value)}
+    className="input"
+  >
+    <option value="">未設定</option>
+    <option value="male">男性</option>
+    <option value="female">女性</option>
+  </select>
+</div>
 
         {/* 追加ボタン */}
         <div className="flex items-end">
