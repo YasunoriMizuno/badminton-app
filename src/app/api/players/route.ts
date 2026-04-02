@@ -25,7 +25,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, level } = body
+    const { name, level,gender } = body
 
     if (!name || typeof name !== 'string' || name.trim() === '') {
       return NextResponse.json(
@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       data: {
         name: name.trim(),
         level: level ?? null,
+        gender: gender ?? null, 
       },
     })
 
