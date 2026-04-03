@@ -9,12 +9,12 @@ import { RankingTable } from './RankingTable'
 
 type Props = {
   playerStats: PlayerStats[]
+  unrankedStats: PlayerStats[]
+  minGames: number
 }
 
-export function RankingClient({ playerStats }: Props) {
-  // 1試合以上プレイした人だけTOP3に表示
-  const activeStats = playerStats.filter((s) => s.total > 0)
-  const top3 = activeStats.slice(0, 3)
+export function RankingClient({ playerStats, unrankedStats, minGames }: Props) {
+  const top3 = playerStats.slice(0, 3)
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
@@ -30,8 +30,42 @@ export function RankingClient({ playerStats }: Props) {
         </div>
       )}
 
-      {/* 全員ランキングテーブル */}
-      <RankingTable playerStats={playerStats} />
+      {/* ランキングテーブル */}
+      {playerStats.length > 0 ? (
+        <RankingTable playerStats={playerStats} />
+      ) : (
+        <div className="card text-center py-10 text-gray-400">
+          <p className="text-lg">まだランキングがありません</p>
+          <p className="text-sm mt-1">
+            {minGames}試合以上プレイするとランキングに表示されます
+          </p>
+        </div>
+      )}
+
+      {/* ランキング外の参加者 */}
+      {unrankedStats.length > 0 && (
+        <div className="card">
+          <h2 className="font-bold text-gray-800 mb-3">
+            ランキング外
+            <span className="ml-2 text-sm font-normal text-gray-400">
+              （{minGames}試合未満）
+            </span>
+          </h2>
+          <div className="space-y-2">
+            {unrankedStats.map((stats) => (
+              <div
+                key={stats.player.id}
+                className="flex items-center justify-between px-4 py-2 bg-gray-50 rounded-lg"
+              >
+                <span className="text-sm text-gray-600">{stats.player.name}</span>
+                <span className="text-xs text-gray-400">
+                  {stats.total}試合（あと{minGames - stats.total}試合）
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
