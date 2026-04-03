@@ -50,5 +50,16 @@ export default async function RankingPage() {
     return b.total - a.total
   })
 
-  return <RankingClient playerStats={playerStats} />
+  // 3試合以上プレイした人だけランキングに表示
+const MIN_GAMES = 3
+const rankedStats = playerStats.filter((s) => s.total >= MIN_GAMES)
+const unrankedStats = playerStats.filter((s) => s.total < MIN_GAMES)
+
+return (
+  <RankingClient
+    playerStats={rankedStats}
+    unrankedStats={unrankedStats}
+    minGames={MIN_GAMES}
+  />
+)
 }
