@@ -50,3 +50,76 @@
 ---
 
 ## 🏗️ システム構成
+```
+クライアント（ブラウザ）
+    ↓ fetch
+Next.js API Routes（/api/...）
+    ↓ Prisma
+PostgreSQL（Supabase）
+```
+
+---
+
+## 📁 ディレクトリ構成
+```
+src/
+├── app/                    # ページ & APIルート
+│   ├── (main)/            # 認証後の画面
+│   │   ├── players/       # 参加者管理
+│   │   ├── matching/      # コート振り分け
+│   │   ├── result/        # 試合結果入力
+│   │   └── ranking/       # ランキング
+│   ├── auth/login/        # ログイン画面
+│   └── api/               # REST API
+├── components/             # UIコンポーネント（機能ごとに分類）
+├── lib/                    # 共通ロジック・クライアント
+├── types/                  # TypeScript 型定義
+└── styles/                 # グローバルCSS
+```
+
+---
+
+## 🌿 ブランチ戦略
+```
+main      ← 常にデプロイ可能（GitHub Actionsで自動チェック）
+develop   ← 開発の統合ブランチ
+feature/* ← 機能ごとの作業ブランチ
+```
+
+---
+
+## 🚀 ローカル開発環境の起動
+
+### 1. リポジトリをクローン
+```bash
+git clone https://github.com/YasunoriMizuno/badminton-app.git
+cd badminton-app
+```
+
+### 2. パッケージをインストール
+```bash
+npm install
+```
+
+### 3. 環境変数を設定
+`.env.example` を参考に `.env.local` と `.env` を作成してください。
+
+### 4. DBマイグレーション
+```bash
+npx prisma migrate dev
+```
+
+### 5. 開発サーバー起動
+```bash
+npm run dev
+```
+
+→ http://localhost:3000 を開く
+
+---
+
+## 👤 制作背景
+
+自分がバドミントンサークルに所属しており、毎回の振り分け作業や
+勝敗管理に不便を感じていました。
+実際に使える課題解決アプリを作ることでエンジニアとしての実力を示したいと思い制作しました。
