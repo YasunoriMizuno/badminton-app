@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏸 BadmintonManager
 
-## Getting Started
+> バドミントンサークルの練習をもっとスマートに。
+> コート振り分けと勝敗管理をひとつのアプリで完結させる。
 
-First, run the development server:
+## 🌐 デモ
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**URL**: https://badminton-app-self.vercel.app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| 項目 | 内容 |
+|------|------|
+| Email | admin@badminton.com |
+| Password | admin1234 |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📱 アプリ概要
 
-## Learn More
+バドミントンサークル・部活の管理者（幹事・部長など）向けの管理ツールです。
+練習のたびにコートやペアを手作業で決める手間をなくし、出席者を選ぶだけで
+自動でペアとコートに振り分けてくれます。
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ 主な機能
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| 機能 | 説明 |
+|------|------|
+| 🔐 管理者ログイン | Supabase Auth によるセキュアな認証 |
+| 👥 参加者管理 | 参加者の追加・削除・当日の出席者選択・性別登録 |
+| 🎲 コート自動振り分け | 男女均等になるようにランダムでペア・コートを割り当て |
+| 🏆 試合結果入力 | 勝敗・スコアを記録（スコアは任意） |
+| 📊 ランキング表示 | 3試合以上の参加者の勝率・勝敗数を集計して表示 |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ 技術スタック
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| カテゴリ | 技術 |
+|----------|------|
+| フロントエンド | Next.js 14 (App Router) / React 18 / TypeScript |
+| スタイリング | Tailwind CSS |
+| バックエンド | Next.js API Routes |
+| 認証 | Supabase Auth |
+| データベース | PostgreSQL (Supabase) |
+| ORM | Prisma |
+| CI/CD | GitHub Actions / Vercel |
+| デプロイ | Vercel |
+
+---
+
+## 🏗️ システム構成
