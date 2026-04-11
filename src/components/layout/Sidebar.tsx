@@ -2,30 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, Shuffle, Trophy, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const NAV_ITEMS = [
-  { href: '/players',  label: '参加者管理',    icon: Users,     description: '出席者の選択・登録' },
-  { href: '/matching', label: 'コート振り分け', icon: Shuffle,   description: '自動でペアを振り分け' },
-  { href: '/result',   label: '試合結果入力',   icon: Trophy,    description: '勝敗・スコアを記録' },
-  { href: '/ranking',  label: 'ランキング',     icon: BarChart3, description: '勝率・成績を確認' },
-]
+import { NAV_ITEMS } from './nav-items'
 
 export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden md:flex flex-col w-60 bg-white border-r border-gray-200 shrink-0">
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-100">
-        <span className="text-2xl">🏸</span>
+    <aside className="hidden w-60 shrink-0 flex-col border-r border-gray-200 bg-white md:flex">
+      <div className="flex items-center gap-3 border-b border-gray-200 px-5 py-5">
+        <span className="flex h-11 w-11 items-center justify-center rounded-[1rem] border-2 border-brand-teal/25 bg-brand-mint text-2xl">
+          🏸
+        </span>
         <div>
-          <p className="font-bold text-gray-900 text-sm leading-tight">Badminton</p>
-          <p className="font-bold text-green-600 text-sm leading-tight">Manager</p>
+          <p className="text-sm font-bold leading-tight text-gray-900">Badminton</p>
+          <p className="text-sm font-bold leading-tight text-brand-teal">Manager</p>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 space-y-1 px-3 py-4">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon
           const isActive = pathname.startsWith(item.href)
@@ -34,11 +29,18 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group',
-                isActive ? 'bg-green-50 text-green-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                'group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors duration-150',
+                isActive
+                  ? 'border-2 border-brand-teal/30 bg-brand-mint text-gray-900'
+                  : 'text-gray-600 hover:bg-brand-mint/50 hover:text-gray-900'
               )}
             >
-              <Icon className={cn('w-5 h-5 shrink-0', isActive ? 'text-green-600' : 'text-gray-400 group-hover:text-gray-600')} />
+              <Icon
+                className={cn(
+                  'h-5 w-5 shrink-0',
+                  isActive ? 'text-brand-teal' : 'text-gray-400 group-hover:text-brand-teal'
+                )}
+              />
               <div className="min-w-0">
                 <p className="text-sm font-medium truncate">{item.label}</p>
                 <p className="text-xs text-gray-400 truncate">{item.description}</p>
@@ -48,8 +50,8 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="px-5 py-4 border-t border-gray-100">
-        <p className="text-xs text-gray-400">ポートフォリオ作品 v1.0.0</p>
+      <div className="border-t border-gray-200 px-5 py-4">
+        <p className="text-xs text-gray-500">ポートフォリオ作品 v1.0.0</p>
       </div>
     </aside>
   )

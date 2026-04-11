@@ -73,18 +73,22 @@ export function MatchHistoryList({ matches, players, onDeleted }: Props) {
                 }
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className={`p-2 rounded-lg text-center ${match.winner_team === 1 ? 'bg-blue-100 ring-2 ring-blue-400' : 'bg-blue-50'}`}>
-                <p className="text-xs text-blue-500 mb-1">チーム1 {match.winner_team === 1 && '🏆'}</p>
-                <p className="font-semibold text-blue-800 break-words">{getPlayerNames(match.team1_player_ids)}</p>
+            <div className="grid grid-cols-1 gap-2 text-sm md:grid-cols-3">
+              <div
+                className={`rounded-lg p-2 text-center ${match.winner_team === 1 ? 'border-2 border-brand-sky bg-brand-sky-soft' : 'border border-brand-sky/25 bg-brand-sky-soft/70'}`}
+              >
+                <p className="mb-1 text-xs text-brand-sky">チーム1 {match.winner_team === 1 && '🏆'}</p>
+                <p className="break-words font-semibold text-brand-ocean">{getPlayerNames(match.team1_player_ids)}</p>
               </div>
-              <div className="flex items-center justify-center flex-col">
+              <div className="flex flex-col items-center justify-center py-1 md:py-0">
                 <span className="font-black text-gray-300 text-xl">VS</span>
                 {match.score && <span className="text-xs font-bold text-gray-500 mt-1">{match.score}</span>}
               </div>
-              <div className={`p-2 rounded-lg text-center ${match.winner_team === 2 ? 'bg-orange-100 ring-2 ring-orange-400' : 'bg-orange-50'}`}>
-                <p className="text-xs text-orange-500 mb-1">チーム2 {match.winner_team === 2 && '🏆'}</p>
-                <p className="font-semibold text-orange-800 break-words">{getPlayerNames(match.team2_player_ids)}</p>
+              <div
+                className={`rounded-lg p-2 text-center ${match.winner_team === 2 ? 'border-2 border-brand-orange bg-brand-orange-soft' : 'border border-brand-orange/25 bg-brand-orange-soft/70'}`}
+              >
+                <p className="mb-1 text-xs text-brand-orange">チーム2 {match.winner_team === 2 && '🏆'}</p>
+                <p className="break-words font-semibold text-gray-900">{getPlayerNames(match.team2_player_ids)}</p>
               </div>
             </div>
           </div>

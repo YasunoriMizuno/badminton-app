@@ -56,14 +56,14 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
   return (
     <div
       className={cn(
-        'flex items-center justify-between px-4 py-3 rounded-lg border transition-all duration-150',
+        'flex flex-wrap items-center justify-between gap-2 gap-y-2 px-3 py-3 rounded-lg border transition-all duration-150 sm:px-4',
         player.is_present
-          ? 'bg-green-50 border-green-200'
+          ? 'border-brand-teal/30 bg-brand-mint'
           : 'bg-white border-gray-200 hover:border-gray-300'
       )}
     >
       {/* 左側：出席チェック・名前・レベル */}
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
         {/* 出席チェックボタン */}
         <button
           onClick={handleTogglePresence}
@@ -71,8 +71,8 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
           className={cn(
             'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0',
             player.is_present
-              ? 'bg-green-600 border-green-600'
-              : 'border-gray-300 hover:border-green-400'
+              ? 'border-brand-teal bg-brand-teal'
+              : 'border-gray-300 hover:border-brand-teal/50'
           )}
         >
           {loadingPresence ? (
@@ -91,8 +91,8 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
         {/* 名前 */}
         <span
           className={cn(
-            'font-medium text-sm',
-            player.is_present ? 'text-green-800' : 'text-gray-700'
+            'min-w-0 truncate font-medium text-sm',
+            player.is_present ? 'text-brand-teal-dark' : 'text-gray-700'
           )}
         >
           {player.name}
@@ -100,7 +100,7 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
 
         {/* レベル */}
         {player.level && (
-          <span className="text-xs text-amber-500 hidden sm:block">
+          <span className="hidden text-xs text-brand-yellow sm:block">
             {formatLevel(player.level)}
           </span>
         )}
@@ -110,7 +110,7 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
 {player.gender && (
   <span className={`text-xs px-2 py-0.5 rounded-full ${
     player.gender === 'male'
-      ? 'bg-blue-100 text-blue-600'
+      ? 'bg-brand-sky-soft text-brand-ocean'
       : 'bg-pink-100 text-pink-600'
   }`}>
     {player.gender === 'male' ? '男性' : '女性'}

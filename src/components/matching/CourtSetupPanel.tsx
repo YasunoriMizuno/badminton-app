@@ -85,18 +85,18 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
           {courts.map((court) => (
             <div
               key={court.id}
-              className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200"
+              className="flex flex-col gap-3 px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 sm:flex-row sm:items-center sm:justify-between"
             >
-              <span className="font-medium text-sm text-gray-800">
+              <span className="min-w-0 font-medium text-sm text-gray-800 truncate">
                 {court.name}
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex shrink-0 items-center justify-end gap-3">
                 <select
                   value={court.match_type}
                   onChange={(e) =>
                     handleChangeMatchType(court.id, e.target.value as MatchType)
                   }
-                  className="text-sm border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal/35"
                 >
                   <option value="doubles">ダブルス</option>
                   <option value="singles">シングルス</option>
@@ -116,20 +116,20 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
       {/* コート追加フォーム */}
       <form
         onSubmit={handleAddCourt}
-        className="flex gap-2 pt-2 border-t border-gray-100"
+        className="flex flex-col gap-2 border-t border-gray-100 pt-2 sm:flex-row sm:items-stretch"
       >
         <input
           type="text"
           value={newCourtName}
           onChange={(e) => setNewCourtName(e.target.value)}
-          className="input flex-1"
+          className="input min-w-0 flex-1"
           placeholder="例：コートA"
           required
         />
         <select
           value={newMatchType}
           onChange={(e) => setNewMatchType(e.target.value as MatchType)}
-          className="input w-36"
+          className="input w-full sm:w-36"
         >
           <option value="doubles">ダブルス</option>
           <option value="singles">シングルス</option>
@@ -137,7 +137,7 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
         <button
           type="submit"
           disabled={loading || !newCourtName.trim()}
-          className="btn-primary px-4"
+          className="btn-primary shrink-0 px-4 sm:self-auto"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />

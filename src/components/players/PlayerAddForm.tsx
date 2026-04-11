@@ -56,7 +56,7 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
   return (
     <div className="card">
       <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <UserPlus className="w-5 h-5 text-green-600" />
+        <UserPlus className="h-5 w-5 text-brand-teal" />
         参加者を追加
       </h2>
 

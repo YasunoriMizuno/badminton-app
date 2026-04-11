@@ -25,15 +25,17 @@ export function LoginForm({ onSubmit, error, loading }: Props) {
   return (
     <div className="w-full max-w-md">
       {/* ロゴ */}
-      <div className="text-center mb-8">
-        <div className="text-5xl mb-4">🏸</div>
-        <h1 className="text-3xl font-bold text-white">BadmintonManager</h1>
-        <p className="text-green-200 mt-2 text-sm">バドミントンサークル管理システム</p>
+      <div className="mb-8 text-center">
+        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-[1.25rem] border-2 border-brand-teal/30 bg-white text-4xl">
+          🏸
+        </div>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900">BadmintonManager</h1>
+        <p className="mt-2 text-sm font-semibold text-brand-teal">バドミントンサークル管理システム</p>
       </div>
 
       {/* フォームカード */}
-      <div className="bg-white rounded-2xl shadow-2xl p-8">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">管理者ログイン</h2>
+      <div className="rounded-[1.25rem] border-2 border-gray-200 bg-white p-5 sm:p-8">
+        <h2 className="mb-6 text-xl font-bold tracking-tight text-gray-900">管理者ログイン</h2>
 
         {/* エラーメッセージ */}
         {error && (

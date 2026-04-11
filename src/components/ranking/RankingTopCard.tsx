@@ -11,9 +11,9 @@ type Props = {
 }
 
 const RANK_STYLES: Record<number, { border: string; emoji: string }> = {
-  1: { border: 'border-yellow-400 bg-yellow-50', emoji: '🥇' },
-  2: { border: 'border-gray-400 bg-gray-50',     emoji: '🥈' },
-  3: { border: 'border-amber-600 bg-amber-50',   emoji: '🥉' },
+  1: { border: 'border-brand-yellow bg-brand-yellow-soft', emoji: '🥇' },
+  2: { border: 'border-gray-400 bg-gray-50', emoji: '🥈' },
+  3: { border: 'border-brand-orange bg-brand-orange-soft', emoji: '🥉' },
 }
 
 export function RankingTopCard({ stats, rank }: Props) {
@@ -23,7 +23,7 @@ export function RankingTopCard({ stats, rank }: Props) {
     <div className={cn('card border-2 text-center', style.border)}>
       <div className="text-3xl mb-2">{style.emoji}</div>
       <p className="font-bold text-gray-900 text-lg">{stats.player.name}</p>
-      <p className="text-2xl font-black text-green-600 mt-1">
+      <p className="mt-1 text-2xl font-black text-brand-teal">
         {formatWinRate(stats.win_rate)}
       </p>
       <p className="text-xs text-gray-500 mt-1">

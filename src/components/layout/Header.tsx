@@ -33,9 +33,9 @@ export function Header({ userEmail }: Props) {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 md:px-6 h-14 flex items-center justify-between shrink-0">
+    <header className="flex min-h-14 shrink-0 items-center justify-between border-b-2 border-gray-200 bg-white px-4 pt-[env(safe-area-inset-top)] md:px-6">
       {/* ページタイトル */}
-      <h1 className="font-bold text-gray-800 text-lg">{pageTitle}</h1>
+      <h1 className="min-w-0 flex-1 truncate pr-2 text-base font-bold text-gray-900 sm:text-lg">{pageTitle}</h1>
 
       {/* ユーザー情報＋ログアウト */}
       <div className="flex items-center gap-3">

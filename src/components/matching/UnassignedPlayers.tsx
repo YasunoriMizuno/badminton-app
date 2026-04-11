@@ -11,15 +11,15 @@ export function UnassignedPlayers({ players }: Props) {
   if (players.length === 0) return null
 
   return (
-    <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-      <p className="text-sm font-medium text-amber-700 mb-2">
+    <div className="rounded-[1rem] border-2 border-brand-yellow/45 bg-brand-yellow-soft p-4">
+      <p className="mb-2 text-sm font-semibold text-gray-900">
         ⚠️ 以下の参加者はコートに割り当てられませんでした
       </p>
       <div className="flex flex-wrap gap-2">
         {players.map((player) => (
           <span
             key={player.id}
-            className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
+            className="rounded-full bg-white px-3 py-1 text-sm font-medium text-brand-orange ring-1 ring-brand-orange/35"
           >
             {player.name}
           </span>

@@ -12,21 +12,21 @@ export function MatchingResultCard({ assignment }: Props) {
   const { court, team1, team2 } = assignment
 
   return (
-    <div className="card border-l-4 border-l-green-500">
+    <div className="card border-l-[6px] border-l-brand-teal">
       {/* コート名・種別 */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-gray-900 text-lg">{court.name}</h3>
         <span className="badge-green">{formatMatchType(court.match_type)}</span>
       </div>
 
-      {/* チーム対戦表示 */}
-      <div className="grid grid-cols-3 gap-3 items-center">
+      {/* チーム対戦表示（狭い画面は縦積み、md 以上は 3 列） */}
+      <div className="grid grid-cols-1 items-center gap-3 md:grid-cols-3">
         {/* チーム1 */}
-        <div className="bg-blue-50 rounded-xl p-3 text-center">
-          <p className="text-xs font-medium text-blue-500 mb-2">チーム 1</p>
+        <div className="rounded-[1rem] border-2 border-brand-sky/40 bg-brand-sky-soft p-3 text-center">
+          <p className="mb-2 text-xs font-semibold text-brand-ocean">チーム 1</p>
           <div className="space-y-1">
             {team1.map((player) => (
-              <p key={player.id} className="text-sm font-semibold text-blue-800">
+              <p key={player.id} className="break-words text-sm font-semibold text-gray-900">
                 {player.name}
               </p>
             ))}
@@ -34,16 +34,16 @@ export function MatchingResultCard({ assignment }: Props) {
         </div>
 
         {/* VS */}
-        <div className="text-center">
+        <div className="py-0.5 text-center md:py-0">
           <span className="font-black text-2xl text-gray-300">VS</span>
         </div>
 
         {/* チーム2 */}
-        <div className="bg-orange-50 rounded-xl p-3 text-center">
-          <p className="text-xs font-medium text-orange-500 mb-2">チーム 2</p>
+        <div className="rounded-[1rem] border-2 border-brand-orange/40 bg-brand-orange-soft p-3 text-center">
+          <p className="mb-2 text-xs font-semibold text-brand-orange">チーム 2</p>
           <div className="space-y-1">
             {team2.map((player) => (
-              <p key={player.id} className="text-sm font-semibold text-orange-800">
+              <p key={player.id} className="break-words text-sm font-semibold text-gray-900">
                 {player.name}
               </p>
             ))}

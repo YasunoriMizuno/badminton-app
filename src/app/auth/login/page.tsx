@@ -32,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-800 via-green-700 to-green-600 flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-brand-mint p-4">
       <LoginForm onSubmit={handleLogin} error={error} loading={loading} />
     </div>
   )

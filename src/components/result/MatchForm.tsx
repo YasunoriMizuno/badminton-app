@@ -79,7 +79,7 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
   return (
     <div className="card">
       <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <Trophy className="w-5 h-5 text-green-600" />
+        <Trophy className="h-5 w-5 text-brand-teal" />
         試合結果を入力
       </h2>
 
@@ -123,7 +123,7 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
                 return (
                   <button key={p.id} type="button" disabled={inTeam2}
                     onClick={() => togglePlayer(setTeam1Ids, team2Ids, p.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${selected ? 'bg-blue-100 text-blue-800 font-medium' : 'hover:bg-gray-50 text-gray-700'} ${inTeam2 ? 'opacity-30 cursor-not-allowed' : ''}`}>
+                    className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-all ${selected ? 'bg-brand-sky-soft font-medium text-brand-ocean' : 'text-gray-700 hover:bg-gray-50'} ${inTeam2 ? 'cursor-not-allowed opacity-30' : ''}`}>
                     {selected ? '✓ ' : ''}{p.name}
                   </button>
                 )
@@ -139,7 +139,7 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
                 return (
                   <button key={p.id} type="button" disabled={inTeam1}
                     onClick={() => togglePlayer(setTeam2Ids, team1Ids, p.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${selected ? 'bg-orange-100 text-orange-800 font-medium' : 'hover:bg-gray-50 text-gray-700'} ${inTeam1 ? 'opacity-30 cursor-not-allowed' : ''}`}>
+                    className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-all ${selected ? 'bg-brand-orange-soft font-medium text-brand-orange' : 'text-gray-700 hover:bg-gray-50'} ${inTeam1 ? 'cursor-not-allowed opacity-30' : ''}`}>
                     {selected ? '✓ ' : ''}{p.name}
                   </button>
                 )
