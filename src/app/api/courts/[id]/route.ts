@@ -5,12 +5,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-type Params = { params: { id: string } }
+type RouteContext = { params: Promise<{ id: string }> }
 
 // コート更新
-export async function PATCH(request: Request, { params }: Params) {
+export async function PATCH(request: Request, { params }: RouteContext) {
   try {
-    const id = Number(params.id)
+    const { id: idParam } = await params
+    const id = Number(idParam)
     if (isNaN(id)) {
       return NextResponse.json(
         { data: null, error: '不正なIDです' },
@@ -39,30 +40,31 @@ export async function PATCH(request: Request, { params }: Params) {
 }
 
 // コート削除
-export async function DELETE(_request: Request, { params }: Params) {
-    try {
-      const id = Number(params.id)
-      if (isNaN(id)) {
-        return NextResponse.json(
-          { data: null, error: '不正なIDです' },
-          { status: 400 }
-        )
-      }
-  
-      // 紐づいた試合データを先に削除
-      await prisma.match.deleteMany({
-        where: { court_id: id },
-      })
-  
-      // コートを削除
-      await prisma.court.delete({ where: { id } })
-  
-      return NextResponse.json({ data: { id }, error: null })
-    } catch (error) {
-      console.error('[DELETE /api/courts/:id]', error)
+export async function DELETE(_request: Request, { params }: RouteContext) {
+  try {
+    const { id: idParam } = await params
+    const id = Number(idParam)
+    if (isNaN(id)) {
       return NextResponse.json(
-        { data: null, error: '削除に失敗しました' },
-        { status: 500 }
+        { data: null, error: '不正なIDです' },
+        { status: 400 }
       )
     }
+
+    // 紐づいた試合データを先に削除
+    await prisma.match.deleteMany({
+      where: { court_id: id },
+    })
+
+    // コートを削除
+    await prisma.court.delete({ where: { id } })
+
+    return NextResponse.json({ data: { id }, error: null })
+  } catch (error) {
+    console.error('[DELETE /api/courts/:id]', error)
+    return NextResponse.json(
+      { data: null, error: '削除に失敗しました' },
+      { status: 500 }
+    )
   }
+}

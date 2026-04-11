@@ -5,12 +5,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-type Params = { params: { id: string } }
+type RouteContext = { params: Promise<{ id: string }> }
 
 // 試合更新
-export async function PATCH(request: Request, { params }: Params) {
+export async function PATCH(request: Request, { params }: RouteContext) {
   try {
-    const id = Number(params.id)
+    const { id: idParam } = await params
+    const id = Number(idParam)
     if (isNaN(id)) {
       return NextResponse.json(
         { data: null, error: '不正なIDです' },
@@ -40,9 +41,10 @@ export async function PATCH(request: Request, { params }: Params) {
 }
 
 // 試合削除
-export async function DELETE(_request: Request, { params }: Params) {
+export async function DELETE(_request: Request, { params }: RouteContext) {
   try {
-    const id = Number(params.id)
+    const { id: idParam } = await params
+    const id = Number(idParam)
     if (isNaN(id)) {
       return NextResponse.json(
         { data: null, error: '不正なIDです' },
