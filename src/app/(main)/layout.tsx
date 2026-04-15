@@ -4,6 +4,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
+import { getActiveCircleId } from '@/lib/circle'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { Header } from '@/components/layout/Header'
 import { MobileNav } from '@/components/layout/MobileNav'
@@ -15,16 +16,19 @@ export default async function MainLayout({
 }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/auth/login')
 
-  if (!user) {
-    redirect('/auth/login')
-  }
+  // アクティブなサークルIDをCookieから取得
+  const circleId = await getActiveCircleId()
+  if (!circleId) redirect('/select-circle')
 
-  // admin ロールを1件でも持っているか確認
-  const adminCount = await prisma.circleMember.count({
-    where: { user_id: user.id, role: 'admin' },
+  // ユーザーがそのサークルに所属しているか確認
+  const membership = await prisma.circleMember.findUnique({
+    where: { circle_id_user_id: { circle_id: circleId, user_id: user.id } },
   })
-  const isAdmin = adminCount > 0
+  if (!membership) redirect('/select-circle')
+
+  const isAdmin = membership.role === 'admin'
 
   return (
     <div className="flex h-screen bg-transparent">

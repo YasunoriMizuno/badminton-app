@@ -1,9 +1,14 @@
 import { prisma } from '@/lib/prisma'
 import { ok, err } from '@/lib/api'
+import { getActiveCircleId } from '@/lib/circle'
 
 export async function GET() {
   try {
+    const circleId = await getActiveCircleId()
+    if (!circleId) return err('サークルが選択されていません', 400)
+
     const players = await prisma.player.findMany({
+      where: { circle_id: circleId },
       orderBy: { created_at: 'asc' },
     })
     return ok(players)
@@ -15,6 +20,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const circleId = await getActiveCircleId()
+    if (!circleId) return err('サークルが選択されていません', 400)
+
     const body = await request.json()
     const { name, level, gender } = body
 
@@ -27,6 +35,7 @@ export async function POST(request: Request) {
         name: name.trim(),
         level: level ?? null,
         gender: gender ?? null,
+        circle_id: circleId,
       },
     })
 

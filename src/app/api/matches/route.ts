@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { ok, err } from '@/lib/api'
+import { getActiveCircleId } from '@/lib/circle'
 
 export async function GET() {
   try {
@@ -16,6 +17,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const circleId = await getActiveCircleId()
+    if (!circleId) return err('サークルが選択されていません', 400)
+
     const body = await request.json()
     const { court_id, match_type, team1_player_ids, team2_player_ids, winner_team, score, played_at } = body
 
@@ -25,6 +29,7 @@ export async function POST(request: Request) {
 
     const match = await prisma.match.create({
       data: {
+        circle_id: circleId,
         court_id,
         match_type,
         team1_player_ids,

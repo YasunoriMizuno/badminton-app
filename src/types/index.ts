@@ -15,6 +15,7 @@ export type Player = {
 
 export type Court = {
   id: number
+  circle_id: number
   name: string
   match_type: MatchType
   created_at: Date
@@ -23,6 +24,7 @@ export type Court = {
 
 export type Match = {
   id: number
+  circle_id: number
   court_id: number
   match_type: MatchType
   team1_player_ids: number[]

@@ -2,14 +2,20 @@
 // ランキングページ（サーバーコンポーネント）
 
 import { prisma } from '@/lib/prisma'
+import { getActiveCircleId } from '@/lib/circle'
 import { RankingClient } from '@/components/ranking/RankingClient'
 import type { PlayerStats } from '@/types'
 
 export default async function RankingPage() {
+  const circleId = (await getActiveCircleId())!
+
   const [players, matches] = await Promise.all([
-    prisma.player.findMany({ orderBy: { name: 'asc' } }),
+    prisma.player.findMany({
+      where: { circle_id: circleId },
+      orderBy: { name: 'asc' },
+    }),
     prisma.match.findMany({
-      where: { winner_team: { not: null } },
+      where: { circle_id: circleId, winner_team: { not: null } },
     }),
   ])
 
