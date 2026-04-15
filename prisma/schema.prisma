@@ -30,25 +30,12 @@ model Circle {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  groups         Group[]
   circle_members CircleMember[]
   players        Player[]
+  courts         Court[]
+  matches        Match[]
 
   @@map("circles")
-}
-
-// レベル別グループテーブル
-model Group {
-  id         Int      @id @default(autoincrement())
-  circle_id  Int
-  name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  circle       Circle        @relation(fields: [circle_id], references: [id], onDelete: Cascade)
-  group_members GroupMember[]
-
-  @@map("groups")
 }
 
 // サークルへの所属＋ロール（admin / leader / member）
@@ -66,21 +53,6 @@ model CircleMember {
   @@map("circle_members")
 }
 
-// グループへの所属＋ロール（leader / member）
-model GroupMember {
-  id         Int      @id @default(autoincrement())
-  group_id   Int
-  player_id  Int
-  role       String   // "leader" | "member"
-  created_at DateTime @default(now())
-
-  group  Group  @relation(fields: [group_id], references: [id], onDelete: Cascade)
-  player Player @relation(fields: [player_id], references: [id], onDelete: Cascade)
-
-  @@unique([group_id, player_id])
-  @@map("group_members")
-}
-
 // 参加者テーブル
 model Player {
   id         Int      @id @default(autoincrement())
@@ -93,7 +65,6 @@ model Player {
   updated_at DateTime @updatedAt
 
   circle        Circle?       @relation(fields: [circle_id], references: [id], onDelete: SetNull)
-  group_members GroupMember[]
 
   @@map("players")
 }
@@ -101,11 +72,13 @@ model Player {
 // コートテーブル
 model Court {
   id         Int      @id @default(autoincrement())
+  circle_id  Int
   name       String
   match_type String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  circle  Circle  @relation(fields: [circle_id], references: [id], onDelete: Cascade)
   matches Match[]
 
   @@map("courts")
@@ -114,6 +87,7 @@ model Court {
 // 試合結果テーブル
 model Match {
   id               Int      @id @default(autoincrement())
+  circle_id        Int
   court_id         Int
   match_type       String
   team1_player_ids Json
@@ -123,7 +97,8 @@ model Match {
   played_at        DateTime @default(now())
   created_at       DateTime @default(now())
 
-  court Court @relation(fields: [court_id], references: [id])
+  circle Circle @relation(fields: [circle_id], references: [id], onDelete: Cascade)
+  court  Court  @relation(fields: [court_id], references: [id])
 
   @@map("matches")
 }

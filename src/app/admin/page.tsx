@@ -1,10 +1,8 @@
-// src/app/(main)/admin/page.tsx
-// 管理者専用ページ
-
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { getAdminCircleIds, isAdmin } from '@/lib/rbac'
+import { getUserRole } from '@/lib/rbac'
+import { getActiveCircleId } from '@/lib/circle'
 import { AdminClient } from '@/components/admin/AdminClient'
 
 export default async function AdminPage() {
@@ -12,17 +10,17 @@ export default async function AdminPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 
-  // admin ロールがない場合はトップにリダイレクト
-  const admin = await isAdmin(user.id)
-  if (!admin) redirect('/')
+  const circleId = await getActiveCircleId()
+  if (!circleId) redirect('/select-circle')
 
-  const adminCircleIds = await getAdminCircleIds(user.id)
+  // アクティブなサークルの admin かチェック
+  const role = await getUserRole(user.id, circleId)
+  if (role !== 'admin') redirect('/players')
 
   const circles = await prisma.circle.findMany({
-    where: { id: { in: adminCircleIds } },
-    orderBy: { created_at: 'asc' },
+    where: { id: circleId },
     include: {
-      groups: true,
+      circle_members: { include: { user: true }, orderBy: { created_at: 'asc' } },
       _count: { select: { circle_members: true, players: true } },
     },
   })

@@ -1,53 +1,35 @@
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { ok, err } from '@/lib/api'
-import { isAdmin, getAdminCircleIds } from '@/lib/rbac'
+import { getUserRole } from '@/lib/rbac'
+import { getActiveCircleId } from '@/lib/circle'
 
-async function getUser() {
+async function getAuthorized() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  return user
+  if (!user) return { user: null, circleId: null, authorized: false }
+  const circleId = await getActiveCircleId()
+  if (!circleId) return { user, circleId: null, authorized: false }
+  const role = await getUserRole(user.id, circleId)
+  return { user, circleId, authorized: role === 'admin' }
 }
 
-export async function GET() {
+export async function PATCH(request: Request) {
   try {
-    const user = await getUser()
+    const { user, circleId, authorized } = await getAuthorized()
     if (!user) return err('未認証です', 401)
-    if (!await isAdmin(user.id)) return err('権限がありません', 403)
-
-    const adminCircleIds = await getAdminCircleIds(user.id)
-    const circles = await prisma.circle.findMany({
-      where: { id: { in: adminCircleIds } },
-      orderBy: { created_at: 'asc' },
-      include: { groups: true, _count: { select: { circle_members: true, players: true } } },
-    })
-    return ok(circles)
-  } catch (error) {
-    console.error('[GET /api/admin/circles]', error)
-    return err('取得に失敗しました')
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const user = await getUser()
-    if (!user) return err('未認証です', 401)
-    if (!await isAdmin(user.id)) return err('権限がありません', 403)
+    if (!authorized || !circleId) return err('権限がありません', 403)
 
     const { name } = await request.json()
     if (!name?.trim()) return err('名前は必須です', 400)
 
-    const circle = await prisma.$transaction(async (tx) => {
-      const c = await tx.circle.create({ data: { name: name.trim() } })
-      await tx.circleMember.create({
-        data: { circle_id: c.id, user_id: user.id, role: 'admin' },
-      })
-      return c
+    const circle = await prisma.circle.update({
+      where: { id: circleId },
+      data: { name: name.trim() },
     })
-
-    return ok(circle, 201)
+    return ok(circle)
   } catch (error) {
-    console.error('[POST /api/admin/circles]', error)
-    return err('作成に失敗しました')
+    console.error('[PATCH /api/admin/circles]', error)
+    return err('更新に失敗しました')
   }
 }
