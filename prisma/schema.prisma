@@ -10,15 +10,75 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ユーザー（管理者）テーブル
+// ユーザーテーブル（Supabase Auth の auth.users と1対1で対応）
+// id は Supabase Auth の UUID をそのまま使用
 model User {
-  id         Int      @id @default(autoincrement())
+  id         String   @id // Supabase Auth の user.id (UUID)
   email      String   @unique
-  password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  circle_members CircleMember[]
+
   @@map("users")
+}
+
+// サークルテーブル
+model Circle {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  groups         Group[]
+  circle_members CircleMember[]
+  players        Player[]
+
+  @@map("circles")
+}
+
+// レベル別グループテーブル
+model Group {
+  id         Int      @id @default(autoincrement())
+  circle_id  Int
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  circle       Circle        @relation(fields: [circle_id], references: [id], onDelete: Cascade)
+  group_members GroupMember[]
+
+  @@map("groups")
+}
+
+// サークルへの所属＋ロール（admin / leader / member）
+model CircleMember {
+  id         Int      @id @default(autoincrement())
+  circle_id  Int
+  user_id    String   // Supabase Auth の user.id (UUID)
+  role       String   // "admin" | "leader" | "member"
+  created_at DateTime @default(now())
+
+  circle Circle @relation(fields: [circle_id], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([circle_id, user_id])
+  @@map("circle_members")
+}
+
+// グループへの所属＋ロール（leader / member）
+model GroupMember {
+  id         Int      @id @default(autoincrement())
+  group_id   Int
+  player_id  Int
+  role       String   // "leader" | "member"
+  created_at DateTime @default(now())
+
+  group  Group  @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [player_id], references: [id], onDelete: Cascade)
+
+  @@unique([group_id, player_id])
+  @@map("group_members")
 }
 
 // 参加者テーブル
@@ -28,8 +88,12 @@ model Player {
   level      Int?
   gender     String?
   is_present Boolean  @default(false)
+  circle_id  Int?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  circle        Circle?       @relation(fields: [circle_id], references: [id], onDelete: SetNull)
+  group_members GroupMember[]
 
   @@map("players")
 }

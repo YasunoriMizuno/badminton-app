@@ -3,17 +3,15 @@
 
 import { prisma } from '@/lib/prisma'
 import { MatchingClient } from '@/components/matching/MatchingClient'
+import type { Court } from '@/types'
 
 export default async function MatchingPage() {
-  // 出席中の参加者とコートを並行取得
   const [presentPlayers, courts] = await Promise.all([
     prisma.player.findMany({
       where: { is_present: true },
       orderBy: { created_at: 'asc' },
     }),
-    prisma.court.findMany({
-      orderBy: { created_at: 'asc' },
-    }),
+    prisma.court.findMany({ orderBy: { created_at: 'asc' } }) as Promise<Court[]>,
   ])
 
   return (

@@ -20,7 +20,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     }
 
     const body = await request.json()
-    const { name, level, is_present } = body
+    const { name, level, is_present, circle_id } = body
 
     const player = await prisma.player.update({
       where: { id },
@@ -28,6 +28,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
         ...(name !== undefined && { name: name.trim() }),
         ...(level !== undefined && { level }),
         ...(is_present !== undefined && { is_present }),
+        ...('circle_id' in body && { circle_id: circle_id ?? null }),
       },
     })
 

@@ -5,8 +5,11 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { NAV_ITEMS } from './nav-items'
 
-export function MobileNav() {
+type Props = { isAdmin?: boolean }
+
+export function MobileNav({ isAdmin = false }: Props) {
   const pathname = usePathname()
+  const visibleItems = isAdmin ? NAV_ITEMS : NAV_ITEMS.filter((i) => i.href !== '/admin')
 
   return (
     <nav
@@ -14,7 +17,7 @@ export function MobileNav() {
       aria-label="メインナビゲーション"
     >
       <div className="flex h-14 items-stretch justify-around gap-1 px-1">
-        {NAV_ITEMS.map((item) => {
+        {visibleItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname.startsWith(item.href)
           return (
@@ -24,12 +27,12 @@ export function MobileNav() {
               className={cn(
                 'mx-0.5 flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl py-1 transition-all duration-200 active:scale-95',
                 isActive
-                  ? 'border-2 border-brand-teal/35 bg-brand-mint text-gray-900'
+                  ? 'bg-brand-yellow/20 text-gray-900 border-b-2 border-brand-yellow'
                   : 'text-gray-500 active:bg-brand-mint/60'
               )}
             >
               <Icon
-                className={cn('h-5 w-5 shrink-0', isActive ? 'text-brand-teal' : 'text-gray-400')}
+                className={cn('h-5 w-5 shrink-0', isActive ? 'text-brand-yellow-dark' : 'text-gray-400')}
                 aria-hidden
               />
               <span

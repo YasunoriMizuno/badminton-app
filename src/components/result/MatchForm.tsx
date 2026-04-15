@@ -17,8 +17,9 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
   const [matchType, setMatchType] = useState<MatchType>('doubles')
   const [team1Ids, setTeam1Ids] = useState<number[]>([])
   const [team2Ids, setTeam2Ids] = useState<number[]>([])
-  const [winnerTeam, setWinnerTeam] = useState<string>('')
-  const [score, setScore] = useState('')
+  const [winnerTeam, setWinnerTeam] = useState<string>('1')
+  const [score1, setScore1] = useState('')
+  const [score2, setScore2] = useState('')
   const [playedAt, setPlayedAt] = useState(
     new Date().toISOString().slice(0, 10)
   )
@@ -57,7 +58,7 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
           team1_player_ids: team1Ids,
           team2_player_ids: team2Ids,
           winner_team: winnerTeam ? Number(winnerTeam) : null,
-          score: score || null,
+          score: score1 && score2 ? `${score1}-${score2}` : null,
           played_at: new Date(playedAt).toISOString(),
         }),
       })
@@ -67,8 +68,9 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
       setCourtId('')
       setTeam1Ids([])
       setTeam2Ids([])
-      setWinnerTeam('')
-      setScore('')
+      setWinnerTeam('1')
+      setScore1('')
+      setScore2('')
     } catch {
       setError('登録に失敗しました')
     } finally {
@@ -150,16 +152,29 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="label">勝利チーム（任意）</label>
+            <label className="label">勝利チーム</label>
             <select value={winnerTeam} onChange={(e) => setWinnerTeam(e.target.value)} className="input">
-              <option value="">未確定</option>
               <option value="1">チーム1の勝利</option>
               <option value="2">チーム2の勝利</option>
             </select>
           </div>
           <div>
             <label className="label">スコア（任意）</label>
-            <input type="text" value={score} onChange={(e) => setScore(e.target.value)} className="input" placeholder="例：21-15" />
+            <div className="flex items-center gap-2">
+              <select value={score1} onChange={(e) => setScore1(e.target.value)} className="input flex-1">
+                <option value="">-</option>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <option key={i} value={i}>{i}</option>
+                ))}
+              </select>
+              <span className="text-lg font-bold text-gray-400 shrink-0">−</span>
+              <select value={score2} onChange={(e) => setScore2(e.target.value)} className="input flex-1">
+                <option value="">-</option>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <option key={i} value={i}>{i}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 

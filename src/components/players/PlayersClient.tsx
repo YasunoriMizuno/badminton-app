@@ -16,24 +16,20 @@ type Props = {
 export function PlayersClient({ initialPlayers }: Props) {
   const [players, setPlayers] = useState<Player[]>(initialPlayers)
 
-  // 参加者追加後に一覧を更新
   function handlePlayerAdded(newPlayer: Player) {
     setPlayers((prev) => [...prev, newPlayer])
   }
 
-  // 参加者削除後に一覧を更新
   function handlePlayerDeleted(id: number) {
     setPlayers((prev) => prev.filter((p) => p.id !== id))
   }
 
-  // 出席フラグ変更後に一覧を更新
   function handlePresenceToggled(id: number, isPresent: boolean) {
     setPlayers((prev) =>
       prev.map((p) => (p.id === id ? { ...p, is_present: isPresent } : p))
     )
   }
 
-  // 全員リセット
   function handleResetAll() {
     setPlayers((prev) => prev.map((p) => ({ ...p, is_present: false })))
   }

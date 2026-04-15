@@ -5,7 +5,6 @@
 
 import { useState } from 'react'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
-
 type Props = {
   onSubmit: (email: string, password: string) => Promise<void>
   error: string | null
@@ -26,8 +25,15 @@ export function LoginForm({ onSubmit, error, loading }: Props) {
     <div className="w-full max-w-md">
       {/* ロゴ */}
       <div className="mb-8 text-center">
-        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-[1.25rem] border-2 border-brand-teal/30 bg-white text-4xl">
-          🏸
+        <div className="mb-4 inline-flex h-24 w-24 items-center justify-center rounded-full bg-brand-teal">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/shuttlecock.png"
+            alt="シャトル"
+            width={60}
+            height={60}
+            className="object-contain"
+          />
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">BadmintonManager</h1>
         <p className="mt-2 text-sm font-semibold text-brand-teal">バドミントンサークル管理システム</p>
@@ -105,6 +111,8 @@ export function LoginForm({ onSubmit, error, loading }: Props) {
             )}
           </button>
         </form>
+
+
       </div>
     </div>
   )

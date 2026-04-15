@@ -100,22 +100,22 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
 
         {/* レベル */}
         {player.level && (
-          <span className="hidden text-xs text-brand-yellow sm:block">
+          <span className="hidden text-xs text-amber-500 sm:block">
             {formatLevel(player.level)}
           </span>
         )}
       </div>
 
       {/* 性別 */}
-{player.gender && (
-  <span className={`text-xs px-2 py-0.5 rounded-full ${
-    player.gender === 'male'
-      ? 'bg-brand-sky-soft text-brand-ocean'
-      : 'bg-pink-100 text-pink-600'
-  }`}>
-    {player.gender === 'male' ? '男性' : '女性'}
-  </span>
-)}
+      {player.gender && (
+        <span className={`text-xs px-2 py-0.5 rounded-full ${
+          player.gender === 'male'
+            ? 'bg-brand-sky-soft text-brand-ocean'
+            : 'bg-pink-100 text-pink-600'
+        }`}>
+          {player.gender === 'male' ? '男性' : '女性'}
+        </span>
+      )}
 
       {/* 右側：出席バッジ・削除ボタン */}
       <div className="flex items-center gap-2">

@@ -23,6 +23,9 @@
   .btn-primary {
     @apply btn bg-brand-teal text-white hover:bg-brand-teal-dark active:scale-[0.98];
   }
+  .btn-accent {
+    @apply btn bg-brand-yellow text-gray-900 hover:bg-brand-yellow-dark active:scale-[0.98];
+  }
   .btn-secondary {
     @apply btn border-2 border-gray-300 bg-white text-gray-800 hover:border-gray-400 hover:bg-gray-50 active:scale-[0.98];
   }
@@ -52,6 +55,9 @@
   }
   .badge-green {
     @apply badge border border-brand-teal/30 bg-brand-mint text-brand-teal-dark;
+  }
+  .badge-yellow {
+    @apply badge border border-brand-yellow/60 bg-brand-yellow-soft text-gray-800;
   }
   .badge-gray {
     @apply badge bg-gray-100 text-gray-600;

@@ -1,10 +1,10 @@
 // src/components/matching/CourtSetupPanel.tsx
-// コート設定パネル（コートの追加・削除・種別変更）
+// コート設定パネル（コートの追加・削除・種別変更・名前編集）
 
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, Loader2 } from 'lucide-react'
+import { Plus, Trash2, Loader2, Pencil, Check, X } from 'lucide-react'
 import type { Court, MatchType } from '@/types'
 
 type Props = {
@@ -16,6 +16,9 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
   const [newCourtName, setNewCourtName] = useState('')
   const [newMatchType, setNewMatchType] = useState<MatchType>('doubles')
   const [loading, setLoading] = useState(false)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editingName, setEditingName] = useState('')
+  const [editLoading, setEditLoading] = useState(false)
 
   // コート追加
   async function handleAddCourt(e: React.FormEvent) {
@@ -54,6 +57,42 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
     }
   }
 
+  // 名前編集開始
+  function handleStartEdit(court: Court) {
+    setEditingId(court.id)
+    setEditingName(court.name)
+  }
+
+  // 名前編集キャンセル
+  function handleCancelEdit() {
+    setEditingId(null)
+    setEditingName('')
+  }
+
+  // 名前保存
+  async function handleSaveName(id: number) {
+    const trimmed = editingName.trim()
+    if (!trimmed) return
+    setEditLoading(true)
+    try {
+      const res = await fetch(`/api/courts/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: trimmed }),
+      })
+      if (!res.ok) throw new Error()
+      onCourtsUpdated(
+        courts.map((c) => (c.id === id ? { ...c, name: trimmed } : c))
+      )
+      setEditingId(null)
+      setEditingName('')
+    } catch {
+      alert('コート名の変更に失敗しました')
+    } finally {
+      setEditLoading(false)
+    }
+  }
+
   // 種別変更
   async function handleChangeMatchType(id: number, match_type: MatchType) {
     try {
@@ -87,9 +126,50 @@ export function CourtSetupPanel({ courts, onCourtsUpdated }: Props) {
               key={court.id}
               className="flex flex-col gap-3 px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 sm:flex-row sm:items-center sm:justify-between"
             >
-              <span className="min-w-0 font-medium text-sm text-gray-800 truncate">
-                {court.name}
-              </span>
+              {editingId === court.id ? (
+                <div className="flex min-w-0 flex-1 items-center gap-2">
+                  <input
+                    type="text"
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveName(court.id)
+                      if (e.key === 'Escape') handleCancelEdit()
+                    }}
+                    className="input min-w-0 flex-1 py-1 text-sm"
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSaveName(court.id)}
+                    disabled={editLoading || !editingName.trim()}
+                    className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-40"
+                  >
+                    {editLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4" />
+                    )}
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex min-w-0 flex-1 items-center gap-1">
+                  <span className="min-w-0 font-medium text-sm text-gray-800 truncate">
+                    {court.name}
+                  </span>
+                  <button
+                    onClick={() => handleStartEdit(court)}
+                    className="shrink-0 p-1 text-gray-400 hover:text-brand-teal hover:bg-teal-50 rounded-lg transition-colors"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
               <div className="flex shrink-0 items-center justify-end gap-3">
                 <select
                   value={court.match_type}

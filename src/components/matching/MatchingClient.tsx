@@ -3,13 +3,15 @@
 
 'use client'
 
-import { useState } from 'react'
-import { Shuffle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Shuffle, RotateCcw } from 'lucide-react'
 import type { Player, Court, MatchingResult } from '@/types'
 import { assignPlayersToCourts } from './matching'
 import { CourtSetupPanel } from './CourtSetupPanel'
 import { MatchingResultCard } from './MatchingResultCard'
 import { UnassignedPlayers } from './UnassignedPlayers'
+
+const STORAGE_KEY = 'matching_result'
 
 type Props = {
   initialPresentPlayers: Player[]
@@ -18,12 +20,34 @@ type Props = {
 
 export function MatchingClient({ initialPresentPlayers, initialCourts }: Props) {
   const [courts, setCourts] = useState<Court[]>(initialCourts)
-  const [result, setResult] = useState<MatchingResult | null>(null)
+  const [result, setResult] = useState<MatchingResult | null>(() => {
+    if (typeof window === 'undefined') return null
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY)
+      return saved ? JSON.parse(saved) : null
+    } catch {
+      return null
+    }
+  })
+
+  // 結果をsessionStorageに同期
+  useEffect(() => {
+    if (result) {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result))
+    } else {
+      sessionStorage.removeItem(STORAGE_KEY)
+    }
+  }, [result])
 
   // 振り分け実行
   function handleShuffle() {
     const matchingResult = assignPlayersToCourts(initialPresentPlayers, courts)
     setResult(matchingResult)
+  }
+
+  // リセット
+  function handleReset() {
+    setResult(null)
   }
 
   // コート更新後に結果をリセット
@@ -45,14 +69,25 @@ export function MatchingClient({ initialPresentPlayers, initialCourts }: Props) 
             <span className="text-base font-normal text-gray-500 ml-1">人</span>
           </p>
         </div>
-        <button
-          onClick={handleShuffle}
-          disabled={!canShuffle}
-          className="btn-primary w-full shrink-0 px-6 py-3 text-base gap-2 sm:w-auto"
-        >
-          <Shuffle className="w-5 h-5" />
-          {result ? '再シャッフル' : '振り分け開始'}
-        </button>
+        <div className="flex w-full gap-2 sm:w-auto">
+          {result && (
+            <button
+              onClick={handleReset}
+              className="btn-secondary shrink-0 px-4 py-3 gap-2"
+            >
+              <RotateCcw className="w-4 h-4" />
+              リセット
+            </button>
+          )}
+          <button
+            onClick={handleShuffle}
+            disabled={!canShuffle}
+            className="btn-primary flex-1 shrink-0 px-6 py-3 text-base gap-2 sm:flex-none"
+          >
+            <Shuffle className="w-5 h-5" />
+            {result ? '再シャッフル' : '振り分け開始'}
+          </button>
+        </div>
       </div>
 
       {/* 人数不足の警告 */}

@@ -37,16 +37,16 @@ export function RankingTable({ playerStats }: Props) {
                   <td className="py-2 px-1 text-center sm:py-3 sm:px-2">
                     {stats.total === 0 ? (
                       <span className="text-gray-300">-</span>
-                    ) : rank === 1 ? '🥇'
-                      : rank === 2 ? '🥈'
-                      : rank === 3 ? '🥉'
+                    ) : rank === 1 ? <span className="text-xl">🥇</span>
+                      : rank === 2 ? <span className="text-xl">🥈</span>
+                      : rank === 3 ? <span className="text-xl">🥉</span>
                       : <span className="text-gray-400">{rank}</span>
                     }
                   </td>
                   <td className="py-2 px-1 sm:py-3 sm:px-2">
                     <span className="text-gray-900">{stats.player.name}</span>
                     {stats.player.level && (
-                      <span className="ml-2 hidden text-xs text-brand-yellow sm:inline">
+                      <span className="ml-2 hidden text-xs text-amber-500 sm:inline">
                         {formatLevel(stats.player.level)}
                       </span>
                     )}
