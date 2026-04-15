@@ -30,6 +30,10 @@ export function PlayersClient({ initialPlayers }: Props) {
     )
   }
 
+  function handlePlayerUpdated(updated: Player) {
+    setPlayers((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+  }
+
   function handleResetAll() {
     setPlayers((prev) => prev.map((p) => ({ ...p, is_present: false })))
   }
@@ -48,6 +52,7 @@ export function PlayersClient({ initialPlayers }: Props) {
         players={players}
         onDeleted={handlePlayerDeleted}
         onPresenceToggled={handlePresenceToggled}
+        onUpdated={handlePlayerUpdated}
       />
     </div>
   )

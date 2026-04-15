@@ -10,9 +10,10 @@ type Props = {
   players: Player[]
   onDeleted: (id: number) => void
   onPresenceToggled: (id: number, isPresent: boolean) => void
+  onUpdated: (updated: Player) => void
 }
 
-export function PlayerList({ players, onDeleted, onPresenceToggled }: Props) {
+export function PlayerList({ players, onDeleted, onPresenceToggled, onUpdated }: Props) {
   if (players.length === 0) {
     return (
       <div className="card text-center py-12 text-gray-400">
@@ -38,6 +39,7 @@ export function PlayerList({ players, onDeleted, onPresenceToggled }: Props) {
             player={player}
             onDeleted={onDeleted}
             onPresenceToggled={onPresenceToggled}
+            onUpdated={onUpdated}
           />
         ))}
       </div>
