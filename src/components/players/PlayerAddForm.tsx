@@ -4,8 +4,9 @@
 'use client'
 
 import { useState } from 'react'
-import { UserPlus, Loader2 } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
 import type { Player } from '@/types'
+import { Button, FormError, SectionHeading } from '@/components/ui'
 
 type Props = {
   onPlayerAdded: (player: Player) => void
@@ -55,16 +56,11 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
 
   return (
     <div className="card">
-      <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <UserPlus className="h-5 w-5 text-brand-teal" />
+      <SectionHeading icon={<UserPlus className="h-5 w-5" />}>
         参加者を追加
-      </h2>
+      </SectionHeading>
 
-      {error && (
-        <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-          {error}
-        </div>
-      )}
+      <FormError message={error} className="mb-3" />
 
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         {/* 名前 */}
@@ -121,17 +117,14 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
 
         {/* 追加ボタン */}
         <div className="flex items-end">
-          <button
+          <Button
             type="submit"
-            disabled={loading || !name.trim()}
-            className="btn-primary w-full sm:w-auto px-6 py-2"
+            loading={loading}
+            disabled={!name.trim()}
+            className="w-full sm:w-auto px-6 py-2"
           >
-            {loading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              '追加'
-            )}
-          </button>
+            追加
+          </Button>
         </div>
       </form>
     </div>

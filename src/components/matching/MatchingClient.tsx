@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react'
 import { Shuffle, RotateCcw } from 'lucide-react'
 import type { Player, Court, MatchingResult } from '@/types'
-import { assignPlayersToCourts } from './matching'
+import { assignPlayersToCourts } from '@/lib/courtAssignment'
 import { CourtSetupPanel } from './CourtSetupPanel'
 import { MatchingResultCard } from './MatchingResultCard'
 import { UnassignedPlayers } from './UnassignedPlayers'

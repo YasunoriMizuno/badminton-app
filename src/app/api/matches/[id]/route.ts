@@ -1,23 +1,13 @@
-// src/app/api/matches/[id]/route.ts
-// PATCH: 試合更新
-// DELETE: 試合削除
-
-import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { ok, err, parseId } from '@/lib/api'
 
 type RouteContext = { params: Promise<{ id: string }> }
 
-// 試合更新
 export async function PATCH(request: Request, { params }: RouteContext) {
   try {
     const { id: idParam } = await params
-    const id = Number(idParam)
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { data: null, error: '不正なIDです' },
-        { status: 400 }
-      )
-    }
+    const id = parseId(idParam)
+    if (id === null) return err('不正なIDです', 400)
 
     const { winner_team, score } = await request.json()
 
@@ -30,35 +20,23 @@ export async function PATCH(request: Request, { params }: RouteContext) {
       include: { court: true },
     })
 
-    return NextResponse.json({ data: match, error: null })
+    return ok(match)
   } catch (error) {
     console.error('[PATCH /api/matches/:id]', error)
-    return NextResponse.json(
-      { data: null, error: '更新に失敗しました' },
-      { status: 500 }
-    )
+    return err('更新に失敗しました')
   }
 }
 
-// 試合削除
 export async function DELETE(_request: Request, { params }: RouteContext) {
   try {
     const { id: idParam } = await params
-    const id = Number(idParam)
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { data: null, error: '不正なIDです' },
-        { status: 400 }
-      )
-    }
+    const id = parseId(idParam)
+    if (id === null) return err('不正なIDです', 400)
 
     await prisma.match.delete({ where: { id } })
-    return NextResponse.json({ data: { id }, error: null })
+    return ok({ id })
   } catch (error) {
     console.error('[DELETE /api/matches/:id]', error)
-    return NextResponse.json(
-      { data: null, error: '削除に失敗しました' },
-      { status: 500 }
-    )
+    return err('削除に失敗しました')
   }
 }

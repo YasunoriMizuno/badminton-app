@@ -1,46 +1,26 @@
-// src/app/api/matches/route.ts
-// GET: 試合一覧取得
-// POST: 試合新規作成
-
-import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { ok, err } from '@/lib/api'
 
-// 試合一覧取得
 export async function GET() {
   try {
     const matches = await prisma.match.findMany({
       orderBy: { played_at: 'desc' },
       include: { court: true },
     })
-    return NextResponse.json({ data: matches, error: null })
+    return ok(matches)
   } catch (error) {
     console.error('[GET /api/matches]', error)
-    return NextResponse.json(
-      { data: null, error: '取得に失敗しました' },
-      { status: 500 }
-    )
+    return err('取得に失敗しました')
   }
 }
 
-// 試合新規作成
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const {
-      court_id,
-      match_type,
-      team1_player_ids,
-      team2_player_ids,
-      winner_team,
-      score,
-      played_at,
-    } = body
+    const { court_id, match_type, team1_player_ids, team2_player_ids, winner_team, score, played_at } = body
 
     if (!court_id || !match_type || !team1_player_ids || !team2_player_ids) {
-      return NextResponse.json(
-        { data: null, error: '必須項目が不足しています' },
-        { status: 400 }
-      )
+      return err('必須項目が不足しています', 400)
     }
 
     const match = await prisma.match.create({
@@ -56,12 +36,9 @@ export async function POST(request: Request) {
       include: { court: true },
     })
 
-    return NextResponse.json({ data: match, error: null }, { status: 201 })
+    return ok(match, 201)
   } catch (error) {
     console.error('[POST /api/matches]', error)
-    return NextResponse.json(
-      { data: null, error: '作成に失敗しました' },
-      { status: 500 }
-    )
+    return err('作成に失敗しました')
   }
 }

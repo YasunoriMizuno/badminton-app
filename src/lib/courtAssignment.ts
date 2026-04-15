@@ -1,4 +1,4 @@
-// src/lib/matching.ts
+// src/lib/courtAssignment.ts
 // コート振り分けロジック（男女均等配置対応）
 
 import type { Court, Player, CourtAssignment, MatchingResult, MatchType } from '@/types'

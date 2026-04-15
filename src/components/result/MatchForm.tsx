@@ -2,9 +2,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Trophy, Loader2, Plus } from 'lucide-react'
+import { Trophy, Plus } from 'lucide-react'
 import type { Court, Player, MatchType } from '@/types'
 import type { SerializedMatch } from './ResultClient'
+import { Button, FormError, SectionHeading } from '@/components/ui'
 
 type Props = {
   courts: Court[]
@@ -80,16 +81,11 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
 
   return (
     <div className="card">
-      <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <Trophy className="h-5 w-5 text-brand-teal" />
+      <SectionHeading icon={<Trophy className="h-5 w-5" />}>
         試合結果を入力
-      </h2>
+      </SectionHeading>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-          {error}
-        </div>
-      )}
+      <FormError message={error} className="mb-4" />
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -178,14 +174,14 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
           </div>
         </div>
 
-        <button type="submit"
-          disabled={loading || !courtId || team1Ids.length !== required || team2Ids.length !== required}
-          className="btn-primary w-full py-3">
-          {loading
-            ? <Loader2 className="w-4 h-4 animate-spin" />
-            : <><Plus className="w-4 h-4" />結果を登録</>
-          }
-        </button>
+        <Button
+          type="submit"
+          loading={loading}
+          disabled={!courtId || team1Ids.length !== required || team2Ids.length !== required}
+          className="w-full py-3"
+        >
+          <Plus className="w-4 h-4" />結果を登録
+        </Button>
       </form>
     </div>
   )

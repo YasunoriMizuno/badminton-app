@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Plus, UserPlus, Loader2, Users, Layers } from 'lucide-react'
+import { ChevronDown, ChevronUp, Plus, UserPlus, Users, Layers } from 'lucide-react'
+import { Button, FormError, IconBox } from '@/components/ui'
 
 type Group = { id: number; name: string }
 type CircleData = {
@@ -81,9 +82,9 @@ export function CircleCard({ circle, onGroupAdded, onMemberAdded }: Props) {
         className="flex w-full items-center justify-between text-left"
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+          <IconBox variant="soft" size="sm">
             <Layers className="h-5 w-5" />
-          </div>
+          </IconBox>
           <div>
             <p className="font-bold text-gray-900">{circle.name}</p>
             <p className="text-xs text-gray-400">
@@ -119,9 +120,9 @@ export function CircleCard({ circle, onGroupAdded, onMemberAdded }: Props) {
                 className="input flex-1 text-sm py-1.5"
                 placeholder="例：初級クラス"
               />
-              <button type="submit" disabled={groupLoading || !newGroupName.trim()} className="btn-primary px-3 py-1.5 text-sm gap-1">
-                {groupLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><Plus className="h-3.5 w-3.5" />追加</>}
-              </button>
+              <Button type="submit" loading={groupLoading} disabled={!newGroupName.trim()} className="px-3 py-1.5 text-sm gap-1">
+                <Plus className="h-3.5 w-3.5" />追加
+              </Button>
             </form>
           </div>
 
@@ -130,7 +131,7 @@ export function CircleCard({ circle, onGroupAdded, onMemberAdded }: Props) {
             <p className="mb-2 text-sm font-semibold text-gray-600 flex items-center gap-1.5">
               <Users className="h-4 w-4" /> メンバーを招待
             </p>
-            {memberError && <p className="mb-2 text-xs text-red-600">{memberError}</p>}
+            <FormError message={memberError} className="mb-2 text-xs" />
             {memberSuccess && <p className="mb-2 text-xs text-brand-teal">✓ メンバーを追加しました</p>}
             <form onSubmit={handleAddMember} className="flex flex-col gap-2 sm:flex-row">
               <input
@@ -146,9 +147,9 @@ export function CircleCard({ circle, onGroupAdded, onMemberAdded }: Props) {
                 <option value="leader">leader</option>
                 <option value="member">member</option>
               </select>
-              <button type="submit" disabled={memberLoading || !memberEmail.trim()} className="btn-primary px-3 py-1.5 text-sm gap-1 shrink-0">
-                {memberLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><UserPlus className="h-3.5 w-3.5" />招待</>}
-              </button>
+              <Button type="submit" loading={memberLoading} disabled={!memberEmail.trim()} className="px-3 py-1.5 text-sm gap-1 shrink-0">
+                <UserPlus className="h-3.5 w-3.5" />招待
+              </Button>
             </form>
           </div>
         </div>

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Loader2, ShieldCheck } from 'lucide-react'
+import { Plus, ShieldCheck } from 'lucide-react'
 import { CircleCard } from './CircleCard'
+import { Button, EmptyState, IconBox } from '@/components/ui'
 
 type Group = { id: number; name: string }
 type CircleData = {
@@ -61,9 +62,9 @@ export function AdminClient({ initialCircles }: Props) {
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       {/* ヘッダー */}
       <div className="card flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-teal text-white">
+        <IconBox size="md">
           <ShieldCheck className="h-6 w-6" />
-        </div>
+        </IconBox>
         <div>
           <p className="font-bold text-gray-900">管理者パネル</p>
           <p className="text-xs text-gray-500">サークル・グループの作成とメンバー管理</p>
@@ -80,18 +81,15 @@ export function AdminClient({ initialCircles }: Props) {
             className="input flex-1"
             placeholder="例：○○大学バドミントン部"
           />
-          <button type="submit" disabled={loading || !newCircleName.trim()} className="btn-primary shrink-0 px-5 gap-1">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Plus className="h-4 w-4" />作成</>}
-          </button>
+          <Button type="submit" loading={loading} disabled={!newCircleName.trim()} className="shrink-0 px-5 gap-1">
+            <Plus className="h-4 w-4" />作成
+          </Button>
         </form>
       </div>
 
       {/* サークル一覧 */}
       {circles.length === 0 ? (
-        <div className="card text-center py-10 text-gray-400">
-          <p>サークルがまだありません</p>
-          <p className="text-sm mt-1">上のフォームから作成してください</p>
-        </div>
+        <EmptyState title="サークルがまだありません" description="上のフォームから作成してください" />
       ) : (
         <div className="space-y-4">
           {circles.map((circle) => (

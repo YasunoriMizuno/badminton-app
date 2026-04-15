@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { Trash2, Loader2 } from 'lucide-react'
 import type { Player } from '@/types'
 import { formatLevel, cn } from '@/lib/utils'
+import { Badge } from '@/components/ui'
 
 type Props = {
   player: Player
@@ -120,7 +121,7 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled }: Props) {
       {/* 右側：出席バッジ・削除ボタン */}
       <div className="flex items-center gap-2">
         {player.is_present && (
-          <span className="badge-green text-xs">出席</span>
+          <Badge variant="green">出席</Badge>
         )}
         <button
           onClick={handleDelete}
