@@ -4,7 +4,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { getAdminCircleIds } from '@/lib/rbac'
+import { getAdminCircleIds, isAdmin } from '@/lib/rbac'
 import { AdminClient } from '@/components/admin/AdminClient'
 
 export default async function AdminPage() {
@@ -12,11 +12,14 @@ export default async function AdminPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 
-  // admin ロールを持つサークルIDを取得
+  // admin ロールがない場合はトップにリダイレクト
+  const admin = await isAdmin(user.id)
+  if (!admin) redirect('/')
+
   const adminCircleIds = await getAdminCircleIds(user.id)
 
   const circles = await prisma.circle.findMany({
-    where: adminCircleIds.length > 0 ? { id: { in: adminCircleIds } } : {},
+    where: { id: { in: adminCircleIds } },
     orderBy: { created_at: 'asc' },
     include: {
       groups: true,

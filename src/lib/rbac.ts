@@ -29,6 +29,16 @@ export async function getAdminCircleIds(userId: string): Promise<number[]> {
 }
 
 /**
+ * ユーザーがいずれかのサークルで admin ロールを持つか確認
+ */
+export async function isAdmin(userId: string): Promise<boolean> {
+  const count = await prisma.circleMember.count({
+    where: { user_id: userId, role: 'admin' },
+  })
+  return count > 0
+}
+
+/**
  * ユーザーが所属するすべてのサークルとロールを返す
  */
 export async function getUserCircles(userId: string) {

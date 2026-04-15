@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { ok, err, parseId } from '@/lib/api'
+import { canManageGroup } from '@/lib/rbac'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -13,6 +14,8 @@ export async function GET(_request: Request, { params }: Params) {
     const { id } = await params
     const groupId = parseId(id)
     if (groupId === null) return err('不正なIDです', 400)
+
+    if (!await canManageGroup(user.id, groupId)) return err('権限がありません', 403)
 
     const members = await prisma.groupMember.findMany({
       where: { group_id: groupId },
@@ -35,6 +38,8 @@ export async function POST(request: Request, { params }: Params) {
     const { id } = await params
     const groupId = parseId(id)
     if (groupId === null) return err('不正なIDです', 400)
+
+    if (!await canManageGroup(user.id, groupId)) return err('権限がありません', 403)
 
     const { player_id, role } = await request.json()
     if (!player_id) return err('player_idは必須です', 400)
