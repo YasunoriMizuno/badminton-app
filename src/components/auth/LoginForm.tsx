@@ -41,7 +41,7 @@ export function LoginForm({ onSubmit, error, loading }: Props) {
 
       {/* フォームカード */}
       <div className="rounded-[1.25rem] border-2 border-gray-200 bg-white p-5 sm:p-8">
-        <h2 className="mb-6 text-xl font-bold tracking-tight text-gray-900">管理者ログイン</h2>
+        <h2 className="mb-6 text-xl font-bold tracking-tight text-gray-900">ログイン</h2>
 
         {/* エラーメッセージ */}
         {error && (
