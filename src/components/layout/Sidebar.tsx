@@ -54,9 +54,6 @@ export function Sidebar({ isAdmin = false }: Props) {
         })}
       </nav>
 
-      <div className="border-t border-gray-200 px-5 py-4">
-        <p className="text-xs text-gray-500">ポートフォリオ作品 v1.0.0</p>
-      </div>
     </aside>
   )
 }
