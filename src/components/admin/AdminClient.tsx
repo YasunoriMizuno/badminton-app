@@ -72,7 +72,7 @@ export function AdminClient({ initialCircles }: Props) {
           <ShieldCheck className="h-6 w-6" />
         </IconBox>
         <div>
-          <p className="font-bold text-gray-900">管理者パネル</p>
+          <p className="font-bold text-gray-900">サークル管理</p>
           <p className="text-xs text-gray-500">サークル設定・メンバー管理</p>
         </div>
       </div>

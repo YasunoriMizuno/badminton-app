@@ -15,5 +15,5 @@ export const NAV_ITEMS: NavItem[] = [
   { href: '/matching', label: 'コート振り分け', shortLabel: '振り分け', icon: Shuffle, description: '自動でペアを振り分け' },
   { href: '/result', label: '試合結果入力', shortLabel: '結果', icon: Trophy, description: '勝敗・スコアを記録' },
   { href: '/ranking', label: 'ランキング', shortLabel: '順位', icon: BarChart3, description: '勝率・成績を確認' },
-  { href: '/admin', label: '管理者設定', shortLabel: '管理', icon: ShieldCheck, description: 'サークル・グループ管理' },
+  { href: '/admin', label: 'サークル管理', shortLabel: '管理', icon: ShieldCheck, description: 'サークル設定・メンバー管理' },
 ]
