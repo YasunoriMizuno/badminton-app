@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { prisma } from '@/lib/prisma'
 import { getActiveCircleId } from '@/lib/circle'
 import { PlayersClient } from '@/components/players/PlayersClient'

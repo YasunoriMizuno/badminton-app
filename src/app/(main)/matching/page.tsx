@@ -1,6 +1,8 @@
 // src/app/(main)/matching/page.tsx
 // コート振り分けページ（サーバーコンポーネント）
 
+export const dynamic = 'force-dynamic'
+
 import { prisma } from '@/lib/prisma'
 import { getActiveCircleId } from '@/lib/circle'
 import { MatchingClient } from '@/components/matching/MatchingClient'

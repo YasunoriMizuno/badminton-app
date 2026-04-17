@@ -1,6 +1,8 @@
 // src/app/(main)/ranking/page.tsx
 // ランキングページ（サーバーコンポーネント）
 
+export const dynamic = 'force-dynamic'
+
 import { prisma } from '@/lib/prisma'
 import { getActiveCircleId } from '@/lib/circle'
 import { RankingClient } from '@/components/ranking/RankingClient'
