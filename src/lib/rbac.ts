@@ -44,22 +44,7 @@ export async function isAdmin(userId: string): Promise<boolean> {
 export async function getUserCircles(userId: string) {
   return prisma.circleMember.findMany({
     where: { user_id: userId },
-    include: { circle: { include: { groups: true } } },
+    include: { circle: true },
     orderBy: { created_at: 'asc' },
   })
-}
-
-/**
- * ユーザーがグループに対して操作できるか確認
- * leader 以上であれば true
- */
-export async function canManageGroup(userId: string, groupId: number): Promise<boolean> {
-  const group = await prisma.group.findUnique({
-    where: { id: groupId },
-    select: { circle_id: true },
-  })
-  if (!group) return false
-
-  const role = await getUserRole(userId, group.circle_id)
-  return role === 'admin' || role === 'leader'
 }
