@@ -81,7 +81,7 @@
 
 | カテゴリ | 技術 |
 |----------|------|
-| フロントエンド | Next.js 15 (App Router) / React 19 / TypeScript |
+| フロントエンド | Next.js 16 (App Router) / React 19 / TypeScript |
 | スタイリング | Tailwind CSS |
 | バックエンド | Next.js API Routes / Server Actions |
 | 認証 | Supabase Auth |
