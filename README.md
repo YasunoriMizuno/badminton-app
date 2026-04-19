@@ -37,6 +37,12 @@
 |---|---|---|
 | ![試合結果入力](docs/screenshots/04_result.png) | ![ランキング](docs/screenshots/05_ranking.png) | ![サークル管理](docs/screenshots/06_admin.png) |
 
+| サークル選択 |
+|:---:|
+| ![サークル選択](docs/screenshots/07_select_circle.png) |
+
+（所属が1件のときはローカルで **`/select-circle?preview=1`** を開くと同じ UI を撮影できます。）
+
 ---
 
 ## 📱 アプリ概要

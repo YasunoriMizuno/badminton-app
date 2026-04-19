@@ -8,7 +8,16 @@ async function selectCircleAction(formData: FormData) {
   redirect(`/api/circle/select?id=${circleId}`)
 }
 
-export default async function SelectCirclePage() {
+type PageProps = {
+  searchParams: Promise<{ preview?: string }>
+}
+
+export default async function SelectCirclePage({ searchParams }: PageProps) {
+  const q = await searchParams
+  /** 開発時のみ: 所属1件でも自動リダイレクトせず UI を確認・スクショ用 */
+  const devPreviewUi =
+    process.env.NODE_ENV === 'development' && q.preview === '1'
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
@@ -26,7 +35,7 @@ export default async function SelectCirclePage() {
   if (memberships.length === 0) redirect('/no-circle')
 
   // サークルが1つだけの場合は自動選択（Route Handler 経由で Cookie をセット）
-  if (memberships.length === 1) {
+  if (memberships.length === 1 && !devPreviewUi) {
     redirect(`/api/circle/select?id=${memberships[0].circle_id}`)
   }
 
