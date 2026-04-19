@@ -163,9 +163,9 @@ src/
 
 ### キャッシュ制御（`force-dynamic`）
 
-Next.js App Router はパフォーマンスのためにページをキャッシュしますが、参加者の出欠変更後に振り分けページへ遷移した際に古いデータが表示される可能性がありました。
+Next.js App Router はパフォーマンスのためにページをキャッシュしますが、参加者の出欠変更後に振り分けページへ遷移した際に、古いデータが表示されることがありました。
 
-`players` / `matching` / `result` / `ranking` の各ページに `export const dynamic = 'force-dynamic'` を追加し、常にサーバーから最新データを取得するよう制御しています。チームで開発する際に「このページはキャッシュしない」という意図をコードで明示することを目的としています。
+出欠や試合結果などの更新が頻繁な `players` / `matching` / `result` / `ranking` だけに `export const dynamic = 'force-dynamic'` を追加し、常にサーバーから最新データを取得するよう制御しています。アプリ全体ではなく、必要な画面に限定しています。
 
 ### Hono によるAPI設計
 
