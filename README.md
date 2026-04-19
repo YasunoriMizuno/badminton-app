@@ -29,17 +29,19 @@
 
 ## 📸 スクリーンショット
 
-| ログイン | 参加者管理 | コート振り分け |
-|---|---|---|
-| ![ログイン](docs/screenshots/01_login.png) | ![参加者管理](docs/screenshots/02_players.png) | ![コート振り分け](docs/screenshots/03_matching.png) |
+利用の流れに近い順です（いずれも3列で幅を揃えています）。
 
-| 試合結果入力 | ランキング | サークル管理 |
+| ログイン | サークル選択 | 参加者管理 |
 |---|---|---|
-| ![試合結果入力](docs/screenshots/04_result.png) | ![ランキング](docs/screenshots/05_ranking.png) | ![サークル管理](docs/screenshots/06_admin.png) |
+| ![ログイン](docs/screenshots/01_login.png) | ![サークル選択](docs/screenshots/07_select_circle.png) | ![参加者管理](docs/screenshots/02_players.png) |
 
-| サークル選択 |
-|:---:|
-| ![サークル選択](docs/screenshots/07_select_circle.png) |
+| コート振り分け | 試合結果入力 | ランキング |
+|---|---|---|
+| ![コート振り分け](docs/screenshots/03_matching.png) | ![試合結果入力](docs/screenshots/04_result.png) | ![ランキング](docs/screenshots/05_ranking.png) |
+
+| サークル管理 | | |
+|---|---|---|
+| ![サークル管理](docs/screenshots/06_admin.png) | | |
 
 （所属が1件のときはローカルで **`/select-circle?preview=1`** を開くと同じ UI を撮影できます。）
 
@@ -86,6 +88,8 @@
 ---
 
 ## 🔐 認証フロー
+
+次の図では、上段がログインから `/select-circle` に至るまでの経路で、箇条書きは **`/select-circle` に来たあと**の分岐です。
 
 ```
 ログイン成功 → /players（アクティブサークル未設定なら /select-circle へ）
