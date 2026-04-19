@@ -176,8 +176,7 @@ export function MatchForm({ courts, players, onMatchCreated }: Props) {
 
         <Button
           type="submit"
-          loading={loading}
-          disabled={!courtId || team1Ids.length !== required || team2Ids.length !== required}
+          disabled={loading || !courtId || team1Ids.length !== required || team2Ids.length !== required}
           className="w-full py-3"
         >
           <Plus className="w-4 h-4" />結果を登録

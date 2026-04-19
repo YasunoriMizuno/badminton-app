@@ -4,9 +4,9 @@
 'use client'
 
 import { useState } from 'react'
-import { UserPlus } from 'lucide-react'
+import { UserPlus, Loader2 } from 'lucide-react'
 import type { Player } from '@/types'
-import { Button, FormError, SectionHeading } from '@/components/ui'
+import { Button, FormError, SectionHeading, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 
 type Props = {
   onPlayerAdded: (player: Player) => void
@@ -68,12 +68,11 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
           <label htmlFor="playerName" className="label">
             名前 <span className="text-red-500">*</span>
           </label>
-          <input
+          <Input
             id="playerName"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="input"
             placeholder="例：田中 太郎"
             required
           />
@@ -81,48 +80,39 @@ export function PlayerAddForm({ onPlayerAdded }: Props) {
 
         {/* レベル */}
         <div className="w-full sm:w-36">
-          <label htmlFor="playerLevel" className="label">
-            レベル（任意）
-          </label>
-          <select
-            id="playerLevel"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            className="input"
-          >
-            <option value="">未設定</option>
-            <option value="1">1（初心者）</option>
-            <option value="2">2（初級）</option>
-            <option value="3">3（中級）</option>
-            <option value="4">4（上級）</option>
-            <option value="5">5（エキスパート）</option>
-          </select>
+          <label className="label">レベル（任意）</label>
+          <Select value={level} onValueChange={setLevel}>
+            <SelectTrigger>
+              <SelectValue placeholder="未設定" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">1（初心者）</SelectItem>
+              <SelectItem value="2">2（初級）</SelectItem>
+              <SelectItem value="3">3（中級）</SelectItem>
+              <SelectItem value="4">4（上級）</SelectItem>
+              <SelectItem value="5">5（エキスパート）</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+
         {/* 性別 */}
-<div className="w-full sm:w-36">
-  <label htmlFor="playerGender" className="label">
-    性別（任意）
-  </label>
-  <select
-    id="playerGender"
-    value={gender}
-    onChange={(e) => setGender(e.target.value)}
-    className="input"
-  >
-    <option value="">未設定</option>
-    <option value="male">男性</option>
-    <option value="female">女性</option>
-  </select>
-</div>
+        <div className="w-full sm:w-36">
+          <label className="label">性別（任意）</label>
+          <Select value={gender} onValueChange={setGender}>
+            <SelectTrigger>
+              <SelectValue placeholder="未設定" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="male">男性</SelectItem>
+              <SelectItem value="female">女性</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* 追加ボタン */}
         <div className="flex items-end">
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={!name.trim()}
-            className="w-full sm:w-auto px-6 py-2"
-          >
+          <Button type="submit" disabled={loading || !name.trim()} className="w-full sm:w-auto">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             追加
           </Button>
         </div>

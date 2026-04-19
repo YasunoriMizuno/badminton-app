@@ -4,7 +4,12 @@ import { useState } from 'react'
 import { Trash2, Loader2, Pencil, Check, X } from 'lucide-react'
 import type { Player } from '@/types'
 import { formatLevel, cn } from '@/lib/utils'
-import { Badge } from '@/components/ui'
+import {
+  Badge,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui'
 
 type Props = {
   player: Player
@@ -40,7 +45,6 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled, onUpdated }: 
   }
 
   async function handleDelete() {
-    if (!confirm(`「${player.name}」を削除しますか？`)) return
     setLoadingDelete(true)
     try {
       const res = await fetch(`/api/players/${player.id}`, { method: 'DELETE' })
@@ -190,13 +194,33 @@ export function PlayerCard({ player, onDeleted, onPresenceToggled, onUpdated }: 
         >
           <Pencil className="w-4 h-4" />
         </button>
-        <button
-          onClick={handleDelete}
-          disabled={loadingDelete}
-          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-        >
-          {loadingDelete ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button
+              disabled={loadingDelete}
+              className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              {loadingDelete ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>参加者を削除しますか？</AlertDialogTitle>
+              <AlertDialogDescription>
+                「{player.name}」を削除します。この操作は元に戻せません。
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>キャンセル</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                削除
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   )

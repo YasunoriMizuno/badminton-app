@@ -1,8 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Pencil, Check, X, UserPlus, Users, Trash2 } from 'lucide-react'
-import { Button, FormError, Badge } from '@/components/ui'
+import { Pencil, Check, X, UserPlus, Users, Trash2, Loader2 } from 'lucide-react'
+import {
+  Button, FormError, Badge,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui'
 
 type Member = {
   id: number
@@ -102,7 +107,6 @@ export function CircleCard({ circle, onNameUpdated, onMemberAdded, onMemberUpdat
   }
 
   async function handleRemoveMember(memberId: number) {
-    if (!confirm('このメンバーを削除しますか？')) return
     setDeletingId(memberId)
     try {
       const res = await fetch(`/api/admin/circles/${circle.id}/members/${memberId}`, {
@@ -135,8 +139,8 @@ export function CircleCard({ circle, onNameUpdated, onMemberAdded, onMemberUpdat
                 if (e.key === 'Escape') { setEditing(false); setEditName(circle.name) }
               }}
             />
-            <Button onClick={handleSaveName} loading={nameLoading} className="px-3 py-2">
-              <Check className="h-4 w-4" />
+            <Button onClick={handleSaveName} disabled={nameLoading} size="icon" className="h-9 w-9">
+              {nameLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
             </Button>
             <button
               onClick={() => { setEditing(false); setEditName(circle.name) }}
@@ -180,14 +184,34 @@ export function CircleCard({ circle, onNameUpdated, onMemberAdded, onMemberUpdat
                 <option value="admin">admin</option>
                 <option value="member">member</option>
               </select>
-              <button
-                onClick={() => handleRemoveMember(m.id)}
-                disabled={deletingId === m.id}
-                className="p-1.5 text-gray-300 hover:text-red-500 disabled:opacity-40 transition-colors"
-                title="削除"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    disabled={deletingId === m.id}
+                    className="p-1.5 text-gray-300 hover:text-red-500 disabled:opacity-40 transition-colors"
+                    title="削除"
+                  >
+                    {deletingId === m.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>メンバーを削除しますか？</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {m.user.email} をサークルから削除します。この操作は元に戻せません。
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>キャンセル</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleRemoveMember(m.id)}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      削除
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           ))}
         </div>
@@ -221,11 +245,11 @@ export function CircleCard({ circle, onNameUpdated, onMemberAdded, onMemberUpdat
           </select>
           <Button
             type="submit"
-            loading={memberLoading}
-            disabled={!memberEmail.trim()}
-            className="px-4 text-sm gap-1.5 shrink-0"
+            disabled={memberLoading || !memberEmail.trim()}
+            className="shrink-0"
           >
-            <UserPlus className="h-3.5 w-3.5" />招待
+            {memberLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-3.5 w-3.5" />}
+            招待
           </Button>
         </form>
         <p className="mt-2 text-xs text-gray-400">

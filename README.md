@@ -97,7 +97,7 @@
 | カテゴリ | 技術 |
 |----------|------|
 | フロントエンド | Next.js 16 (App Router) / React 19 / TypeScript |
-| スタイリング | Tailwind CSS |
+| スタイリング | Tailwind CSS / shadcn/ui |
 | バックエンド | Hono / Next.js (App Router) |
 | 認証 | Supabase Auth |
 | データベース | PostgreSQL (Supabase) |
