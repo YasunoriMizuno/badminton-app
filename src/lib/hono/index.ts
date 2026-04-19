@@ -339,6 +339,7 @@ adminRoutes.post('/circles/:id/members', async (c) => {
     where: { circle_id_user_id: { circle_id: circleId, user_id: authUser.id } },
     update: { role },
     create: { circle_id: circleId, user_id: authUser.id, role },
+    include: { user: true },
   })
   return c.json({ data: member, error: null }, 201)
 })
