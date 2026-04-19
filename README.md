@@ -29,21 +29,40 @@
 
 ## 📸 スクリーンショット
 
-利用の流れに近い順です（いずれも3列で幅を揃えています）。
+利用の流れに近い順です。GitHub の Markdown 表では画像の実サイズに列幅が引っ張られるため、**HTML の表＋各画像 `width="320"`** で表示幅を揃えています。
 
-| ログイン | サークル選択 | 参加者管理 |
-|---|---|---|
-| ![ログイン](docs/screenshots/01_login.png) | ![サークル選択](docs/screenshots/07_select_circle.png) | ![参加者管理](docs/screenshots/02_players.png) |
-
-| コート振り分け | 試合結果入力 | ランキング |
-|---|---|---|
-| ![コート振り分け](docs/screenshots/03_matching.png) | ![試合結果入力](docs/screenshots/04_result.png) | ![ランキング](docs/screenshots/05_ranking.png) |
-
-| | サークル管理 | |
-|---|---|---|
-| | ![サークル管理](docs/screenshots/06_admin.png) | |
-
-（所属が1件のときはローカルで **`/select-circle?preview=1`** を開くと同じ UI を撮影できます。）
+<table>
+  <tr>
+    <th width="33%" align="center">ログイン</th>
+    <th width="34%" align="center">サークル選択</th>
+    <th width="33%" align="center">参加者管理</th>
+  </tr>
+  <tr>
+    <td valign="top" align="center"><img src="docs/screenshots/01_login.png" alt="ログイン" width="320" /></td>
+    <td valign="top" align="center"><img src="docs/screenshots/07_select_circle.png" alt="サークル選択" width="320" /></td>
+    <td valign="top" align="center"><img src="docs/screenshots/02_players.png" alt="参加者管理" width="320" /></td>
+  </tr>
+  <tr>
+    <th align="center">コート振り分け</th>
+    <th align="center">試合結果入力</th>
+    <th align="center">ランキング</th>
+  </tr>
+  <tr>
+    <td valign="top" align="center"><img src="docs/screenshots/03_matching.png" alt="コート振り分け" width="320" /></td>
+    <td valign="top" align="center"><img src="docs/screenshots/04_result.png" alt="試合結果入力" width="320" /></td>
+    <td valign="top" align="center"><img src="docs/screenshots/05_ranking.png" alt="ランキング" width="320" /></td>
+  </tr>
+  <tr>
+    <th align="center"></th>
+    <th align="center">サークル管理</th>
+    <th align="center"></th>
+  </tr>
+  <tr>
+    <td></td>
+    <td valign="top" align="center"><img src="docs/screenshots/06_admin.png" alt="サークル管理" width="320" /></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 
@@ -248,6 +267,8 @@ npm run dev
 ```
 
 → http://localhost:3000 を開く
+
+所属サークルが1件だけのユーザーは、通常 `/select-circle` に留まらず自動で `/players` に進みます。開発中に選択 UI だけ確認したいときは `http://localhost:3000/select-circle?preview=1` を開いてください（`npm run dev` 時のみ有効）。
 
 ### 6. 初期セットアップ
 
