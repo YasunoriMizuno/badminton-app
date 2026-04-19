@@ -39,9 +39,9 @@
 |---|---|---|
 | ![コート振り分け](docs/screenshots/03_matching.png) | ![試合結果入力](docs/screenshots/04_result.png) | ![ランキング](docs/screenshots/05_ranking.png) |
 
-| サークル管理 | | |
+| | サークル管理 | |
 |---|---|---|
-| ![サークル管理](docs/screenshots/06_admin.png) | | |
+| | ![サークル管理](docs/screenshots/06_admin.png) | |
 
 （所属が1件のときはローカルで **`/select-circle?preview=1`** を開くと同じ UI を撮影できます。）
 
