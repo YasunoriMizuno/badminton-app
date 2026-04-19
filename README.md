@@ -165,9 +165,7 @@ src/
 
 Next.js App Router はパフォーマンスのためにページをキャッシュしますが、参加者の出欠変更後に振り分けページへ遷移した際に古いデータが表示される可能性がありました。
 
-`players` / `matching` / `result` / `ranking` の各ページに `export const dynamic = 'force-dynamic'` を追加し、常にサーバーから最新データを取得するように明示的に制御しています。
-
-なお、これらのページは `cookies()` を使用しているため Next.js が自動的に動的レンダリングを行いますが、意図を明示しコードの可読性を高める目的でも記述しています。
+`players` / `matching` / `result` / `ranking` の各ページに `export const dynamic = 'force-dynamic'` を追加し、常にサーバーから最新データを取得するよう制御しています。チームで開発する際に「このページはキャッシュしない」という意図をコードで明示することを目的としています。
 
 ### Hono によるAPI設計
 
